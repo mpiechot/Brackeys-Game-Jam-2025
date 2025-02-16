@@ -79,14 +79,23 @@ namespace GameJam.Mob
 
                 var targetResult = targetProvider.GetTarget(this);
                 target = targetResult.Target;
-                Agent.SetDestination(target.transform.position);
-                if (targetResult.Action == TargetAction.Attack && currentCooldownInMilliSec == 0)
+
+                if(target)
                 {
-                    Attack();
+                    HandleTargetResult(targetResult.Action);
                 }
 
                 currentCooldownInMilliSec = Mathf.Max(0, currentCooldownInMilliSec - 1);
                 await UniTask.NextFrame(cancellationToken);
+            }
+        }
+
+        protected virtual void HandleTargetResult(TargetAction action)
+        {
+            Agent.SetDestination(target!.transform.position);
+            if (action == TargetAction.Attack && currentCooldownInMilliSec == 0)
+            {
+                Attack();
             }
         }
 
