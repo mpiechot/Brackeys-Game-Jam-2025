@@ -1,16 +1,19 @@
+#nullable enable
+
+using GameJam.Mob;
 using UnityEngine;
 
-public class RangeMob : MonoBehaviour
+public class RangeMob : Mob
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    protected override void HandleTargetResult(GameObject? target, TargetAction action)
     {
-        
+        if (target) Agent.SetDestination(target.transform.position);
+
+        var performedAction = action switch
+        {
+            TargetAction.Attack => "Bogenschuss",
+            _ => "Ungültig"
+        };
     }
 }

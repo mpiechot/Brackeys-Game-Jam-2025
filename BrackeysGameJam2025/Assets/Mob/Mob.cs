@@ -21,13 +21,11 @@ namespace GameJam.Mob
 
         private CancellableTaskCollection taskCollection = new();
 
-        private GameObject? target;
-
         private ITargetProvider? targetProvider;
 
-        private int currentCooldownInMilliSec = 0;
+        protected int currentCooldownInMilliSec { get; private set; } = 0;
 
-        private int currentHealth;
+        protected int currentHealth;
 
         public ITargetProvider? TargetProvider
         {
@@ -47,7 +45,7 @@ namespace GameJam.Mob
 
         public MobStats Stats => SerializeFieldNotAssignedException.ThrowIfNull(mobStats, nameof(mobStats));
 
-        private NavMeshAgent Agent => SerializeFieldNotAssignedException.ThrowIfNull(agent, nameof(agent));
+        protected NavMeshAgent Agent => SerializeFieldNotAssignedException.ThrowIfNull(agent, nameof(agent));
 
         private void Start()
         {
@@ -78,19 +76,28 @@ namespace GameJam.Mob
                 }
 
                 var targetResult = targetProvider.GetTarget(this);
-                target = targetResult.Target;
-                Agent.SetDestination(target.transform.position);
-                if (targetResult.Action == TargetAction.Attack && currentCooldownInMilliSec == 0)
-                {
-                    Attack();
-                }
+
+                HandleTargetResult(targetResult.Target, targetResult.Action);
 
                 currentCooldownInMilliSec = Mathf.Max(0, currentCooldownInMilliSec - 1);
                 await UniTask.NextFrame(cancellationToken);
             }
         }
 
-        private void Attack()
+        protected virtual void HandleTargetResult(GameObject? target, TargetAction action)
+        {
+            if(target)
+            {
+                Agent.SetDestination(target.transform.position);
+            }
+
+            if (action == TargetAction.Attack && currentCooldownInMilliSec == 0)
+            {
+                Attack(target);
+            }
+        }
+
+        private void Attack(GameObject? target)
         {
             if (target == null)
             {
