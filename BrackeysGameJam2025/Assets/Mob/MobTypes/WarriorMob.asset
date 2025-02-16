@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: WarriorMob
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 25
-  <AttackDamage>k__BackingField: 2
-  <AttackTimeSeconds>k__BackingField: 3
+  <AttackDamage>k__BackingField: 5
+  <AttackTimeSeconds>k__BackingField: 2
   <AttackRange>k__BackingField: 2
-  <AttackCooldownSeconds>k__BackingField: 10
+  <AttackCooldownSeconds>k__BackingField: 2
   <TargetingRange>k__BackingField: 1
   <MobType>k__BackingField: 2

@@ -91,7 +91,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -105,7 +105,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -129,7 +129,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -636,7 +636,26 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      at_goronba_sprites_0: -647777270248834200
+      at_goronba_sprites_1: -3249916513809991079
+      at_goronba_sprites_10: -6728437458832818733
+      at_goronba_sprites_11: 8858120592047505946
+      at_goronba_sprites_12: 2114968335204707085
+      at_goronba_sprites_13: 5999312285861873788
+      at_goronba_sprites_14: 3767786420278933824
+      at_goronba_sprites_15: -940995499975987343
+      at_goronba_sprites_16: -4680463822747921291
+      at_goronba_sprites_17: 2706029032153780493
+      at_goronba_sprites_18: 6623179111531784585
+      at_goronba_sprites_2: 5108286896880632448
+      at_goronba_sprites_3: 2569819219959254400
+      at_goronba_sprites_4: 5575216701543786434
+      at_goronba_sprites_5: 4056846998628265097
+      at_goronba_sprites_6: 4494899961105380779
+      at_goronba_sprites_7: 2671297362629922631
+      at_goronba_sprites_8: 1878872851569035828
+      at_goronba_sprites_9: 6059299857925112083
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

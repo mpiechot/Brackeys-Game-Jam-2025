@@ -118,7 +118,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -132,7 +132,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -156,7 +156,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -861,7 +861,35 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      at_baddies_0: -4581817404165128940
+      at_baddies_1: 7119419699235326500
+      at_baddies_10: -4948319357613300420
+      at_baddies_11: -2546281288807413780
+      at_baddies_12: 5302572804507026676
+      at_baddies_13: 8569521292585297694
+      at_baddies_14: 3879310062132415623
+      at_baddies_15: -2310458608276049477
+      at_baddies_16: -2374264479099904984
+      at_baddies_17: 5878781694822383583
+      at_baddies_18: 7346503046083919606
+      at_baddies_19: 7317692821243465057
+      at_baddies_2: -4360748592881434386
+      at_baddies_20: 3205940126529814726
+      at_baddies_21: 8961708854475572661
+      at_baddies_22: 1375826445818446973
+      at_baddies_23: 5489126922465442035
+      at_baddies_24: 497694436582136846
+      at_baddies_25: -7178696997445281925
+      at_baddies_26: -6387324415723788362
+      at_baddies_27: -3818147076758858534
+      at_baddies_3: 6521819092519540825
+      at_baddies_4: 7892322811186259156
+      at_baddies_5: 9177531415560647871
+      at_baddies_6: 62812201907258207
+      at_baddies_7: 612373366670210669
+      at_baddies_8: -1125468017677323567
+      at_baddies_9: -2996785774241306294
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

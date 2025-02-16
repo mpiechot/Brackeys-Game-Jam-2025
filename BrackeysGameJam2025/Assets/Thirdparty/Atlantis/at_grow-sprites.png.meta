@@ -256,7 +256,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -270,7 +270,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -294,7 +294,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -2011,7 +2011,81 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      at_grow-sprites_0: -1974802120822788429
+      at_grow-sprites_1: -8088146480818751549
+      at_grow-sprites_10: -530503621161560896
+      at_grow-sprites_11: -8199156533229659973
+      at_grow-sprites_12: 3187144649018051960
+      at_grow-sprites_13: -7075665831106131145
+      at_grow-sprites_14: -4986712890600616946
+      at_grow-sprites_15: 9051953961353828169
+      at_grow-sprites_16: 5963983241240683020
+      at_grow-sprites_17: -5862999102965073182
+      at_grow-sprites_18: -6815460278845881071
+      at_grow-sprites_19: -746338588494713330
+      at_grow-sprites_2: 7679166177324743509
+      at_grow-sprites_20: -8295406811682525734
+      at_grow-sprites_21: -6384293373530585086
+      at_grow-sprites_22: 6507054130106050878
+      at_grow-sprites_23: 5893986548094365367
+      at_grow-sprites_24: 6223863129165459639
+      at_grow-sprites_25: 3997095903863818681
+      at_grow-sprites_26: -4112421143480635357
+      at_grow-sprites_27: -8946745376492969970
+      at_grow-sprites_28: 232732017983987232
+      at_grow-sprites_29: -3141349686924825492
+      at_grow-sprites_3: 4921741916311143358
+      at_grow-sprites_30: 8099985325913583064
+      at_grow-sprites_31: -7925641881044501442
+      at_grow-sprites_32: 6914925070705512292
+      at_grow-sprites_33: 7712932624658629793
+      at_grow-sprites_34: 3289658716717600642
+      at_grow-sprites_35: 8207990706241608750
+      at_grow-sprites_36: 4472903965443742851
+      at_grow-sprites_37: 3103853867783044191
+      at_grow-sprites_38: 4868177996838907591
+      at_grow-sprites_39: 2260383913716997007
+      at_grow-sprites_4: -6886583804739018050
+      at_grow-sprites_40: 5070372651475302211
+      at_grow-sprites_41: -7718888205490232888
+      at_grow-sprites_42: -4006892891661690007
+      at_grow-sprites_43: -5183763044815655637
+      at_grow-sprites_44: 7301805876146048496
+      at_grow-sprites_45: 5542380643704942349
+      at_grow-sprites_46: -129054964882618838
+      at_grow-sprites_47: 2377713322174973439
+      at_grow-sprites_48: 2292077741615537646
+      at_grow-sprites_49: -114287300320189583
+      at_grow-sprites_5: 7144684709785771998
+      at_grow-sprites_50: 2537213878650500925
+      at_grow-sprites_51: 6351405495699676876
+      at_grow-sprites_52: 5107528716047333675
+      at_grow-sprites_53: 1333199053590606000
+      at_grow-sprites_54: -3938952806752604333
+      at_grow-sprites_55: -5413598388388383673
+      at_grow-sprites_56: -3998160789585422820
+      at_grow-sprites_57: -6593668641768602739
+      at_grow-sprites_58: -7386849431361358923
+      at_grow-sprites_59: 4711205606716382259
+      at_grow-sprites_6: 3795219167373153855
+      at_grow-sprites_60: -3598858751481222767
+      at_grow-sprites_61: 4067473715785692283
+      at_grow-sprites_62: -9000040885808241025
+      at_grow-sprites_63: 6291157356545579937
+      at_grow-sprites_64: 4074444525440462673
+      at_grow-sprites_65: -9157695040373206232
+      at_grow-sprites_66: -1192375711613235907
+      at_grow-sprites_67: 8220546521652727120
+      at_grow-sprites_68: -8820564617982499063
+      at_grow-sprites_69: 3688680507935864699
+      at_grow-sprites_7: 458863186926198253
+      at_grow-sprites_70: 6689518673753957835
+      at_grow-sprites_71: -6634021945849193400
+      at_grow-sprites_72: -5594203714073468742
+      at_grow-sprites_73: -6129095860742904739
+      at_grow-sprites_8: 3547228201241139332
+      at_grow-sprites_9: 5276954355922949207
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

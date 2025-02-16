@@ -1,3 +1,4 @@
+using Assets.Player.Actions;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -30,8 +31,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDashing || !canMove)
+        if (isDashing)
         {
+            return;
+        }
+
+        if (!canMove)
+        {
+            rigidBody.linearVelocity = Vector2.zero;
             return;
         }
 

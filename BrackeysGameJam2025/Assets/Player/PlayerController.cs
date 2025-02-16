@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Assets.Player.Actions;
 using GameJam.Exceptions;
 using GameJam.Mob;
 using GameJam.Porjectile;
@@ -14,12 +15,6 @@ namespace GameJam.Player
     public class PlayerController : MonoBehaviour, IUnit
     {
         [SerializeField]
-        private float parryRange = 1f;
-
-        [SerializeField]
-        private float parryCooldown = 1f;
-
-        [SerializeField]
         private PlayerHealth? playerHealth;
 
         [SerializeField]
@@ -28,8 +23,14 @@ namespace GameJam.Player
         [SerializeField]
         private PlayerVisualsController? playerVisualsController;
 
-        private bool canParry = true;
-        private float parryTime = 0.2f;
+        private ParryAction parryAction;
+        private AriseAction ariseAction;
+
+        [SerializeField]
+        private PlayerActionStats parryStats = new();
+
+        [SerializeField]
+        private PlayerActionStats ariseStats = new();
 
         public GameObject Unit => gameObject;
 
@@ -39,6 +40,36 @@ namespace GameJam.Player
 
         private PlayerVisualsController PlayerVisualsController => SerializeFieldNotAssignedException.ThrowIfNull(playerVisualsController);
 
+        private void Awake()
+        {
+            parryAction = new ParryAction(transform, PlayerMovement, PlayerVisualsController);
+            ariseAction = new AriseAction(transform, PlayerMovement, PlayerVisualsController);
+
+            UpdateActions();
+        }
+
+        private void OnValidate()
+        {
+            UpdateActions();
+        }
+
+        private void UpdateActions()
+        {
+            if (!Application.isPlaying || parryAction == null || ariseAction == null)
+            {
+                // Don't care
+                return;
+            }
+
+            parryAction.Cooldown = parryStats.Cooldown;
+            parryAction.Time = parryStats.Time;
+            parryAction.Range = parryStats.Range;
+
+            ariseAction.Cooldown = ariseStats.Cooldown;
+            ariseAction.Time = ariseStats.Time;
+            ariseAction.Range = ariseStats.Range;
+        }
+
         public void GetHit(int damage)
         {
             PlayerHealth.ApplyDamage(damage);
@@ -46,42 +77,31 @@ namespace GameJam.Player
 
         public void Parry()
         {
-            if (canParry)
+            if (parryAction.CanInvoke)
             {
-                StartCoroutine(ExecuteParry());
+                parryAction.Invoke();
             }
         }
 
-        private IEnumerator ExecuteParry()
+        public void Arise()
         {
-            canParry = false;
-            PlayerMovement.DisableMovement();
-
-            var objectsInParryRange = Physics2D.OverlapCircleAll(transform.position, parryRange);
-
-            // Parry all bullets, which are targeting the player
-            var bulletsInRange = objectsInParryRange.Select(obj => obj.GetComponent<ProjectileBase>()).Where(projectile => projectile != null && projectile.Target.gameObject == gameObject);
-
-            foreach (var bullet in bulletsInRange)
+            if (ariseAction.CanInvoke)
             {
-                bullet.Parry(transform);
+                ariseAction.Invoke();
             }
-
-            // Parry all close-combat, which are targeting the player
-            var enemiesInRange = objectsInParryRange.Select(obj => obj.GetComponent<MobBase>()).Where(mob => mob != null && mob.Target == gameObject && mob.IsAttacking);
-            foreach (var enemy in enemiesInRange)
-            {
-                enemy.GetParried();
-            }
-
-
-            PlayerVisualsController.ShowParryState();
-
-            yield return new WaitForSeconds(parryTime);
-            PlayerMovement.EnableMovement();
-            PlayerVisualsController.ShowNormalState();
-            yield return new WaitForSeconds(parryCooldown);
-            canParry = true;
         }
+    }
+
+    [Serializable]
+    public struct PlayerActionStats
+    {
+        [SerializeField]
+        public float Time;
+
+        [SerializeField]
+        public float Cooldown;
+
+        [SerializeField]
+        public float Range;
     }
 }

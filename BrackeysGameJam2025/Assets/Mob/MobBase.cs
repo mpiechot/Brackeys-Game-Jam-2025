@@ -20,6 +20,9 @@ namespace GameJam.Mob
         [SerializeField]
         private NavMeshAgent? agent;
 
+        [SerializeField]
+        private Animator visualAnimator;
+
         private CancellableTaskCollection taskCollection = new();
 
         private ITargetProvider? targetProvider;
@@ -31,6 +34,8 @@ namespace GameJam.Mob
         private Coroutine? attacking;
 
         public bool IsAttacking { get; private set; }
+
+        public bool IsDead => currentHealth <= 0;
 
         public GameObject? Target { get; private set; }
 
@@ -59,6 +64,7 @@ namespace GameJam.Mob
 
         private void Start()
         {
+            visualAnimator.StartPlayback();
             currentHealth = Stats.MaxHealth;
             var player = FindAnyObjectByType<PlayerController>().gameObject;
             Initialize(new EnemyMobTargetProvider(Array.Empty<GameObject>(), new GameObject[] { player }));
@@ -92,6 +98,12 @@ namespace GameJam.Mob
                 CurrentCooldownInMilliSec = Mathf.Max(0, CurrentCooldownInMilliSec - 1);
                 await UniTask.NextFrame(cancellationToken);
             }
+        }
+
+        private void Update()
+        {
+            var direction = Agent.destination.x - transform.position.x;
+            visualAnimator.SetFloat("XDirection", direction);
         }
 
         protected virtual void HandleTargetResult(GameObject? target, TargetAction action)
@@ -165,6 +177,11 @@ namespace GameJam.Mob
                 StartCoroutine(AttackCooldown());
                 GetHit(Stats.AttackDamage);
             }
+        }
+
+        internal void Arise()
+        {
+            throw new NotImplementedException();
         }
     }
 }
