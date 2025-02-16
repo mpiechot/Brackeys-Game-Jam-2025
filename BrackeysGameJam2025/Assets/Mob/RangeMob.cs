@@ -3,7 +3,7 @@
 using GameJam.Mob;
 using UnityEngine;
 
-public class RangeMob : Mob
+public class RangeMob : MobBase
 {
 
     protected override void HandleTargetResult(GameObject? target, TargetAction action)

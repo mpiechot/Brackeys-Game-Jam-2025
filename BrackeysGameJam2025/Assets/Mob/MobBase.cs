@@ -5,13 +5,14 @@ using GameJam.Exceptions;
 using GameJam.Player;
 using GameJam.Util;
 using System;
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace GameJam.Mob
 {
-    public class Mob : MonoBehaviour, IUnit
+    public class MobBase : MonoBehaviour, IUnit
     {
         [SerializeField]
         private MobStats? mobStats;
@@ -23,9 +24,17 @@ namespace GameJam.Mob
 
         private ITargetProvider? targetProvider;
 
-        protected int currentCooldownInMilliSec { get; private set; } = 0;
-
         protected int currentHealth;
+
+        private bool canAttack = true;
+
+        private Coroutine? attacking;
+
+        public bool IsAttacking { get; private set; }
+
+        public GameObject? Target { get; private set; }
+
+        public GameObject Unit => gameObject;
 
         public ITargetProvider? TargetProvider
         {
@@ -35,6 +44,7 @@ namespace GameJam.Mob
                 targetProvider = value;
             }
         }
+        protected int CurrentCooldownInMilliSec { get; private set; } = 0;
 
         public void Initialize(ITargetProvider? targetProviderInstance)
         {
@@ -71,7 +81,7 @@ namespace GameJam.Mob
                 if (targetProvider == null)
                 {
                     await UniTask.Delay(100, cancellationToken: cancellationToken);
-                    currentCooldownInMilliSec = Mathf.Max(0, currentCooldownInMilliSec - 100);
+                    CurrentCooldownInMilliSec = Mathf.Max(0, CurrentCooldownInMilliSec - 100);
                     continue;
                 }
 
@@ -79,19 +89,20 @@ namespace GameJam.Mob
 
                 HandleTargetResult(targetResult.Target, targetResult.Action);
 
-                currentCooldownInMilliSec = Mathf.Max(0, currentCooldownInMilliSec - 1);
+                CurrentCooldownInMilliSec = Mathf.Max(0, CurrentCooldownInMilliSec - 1);
                 await UniTask.NextFrame(cancellationToken);
             }
         }
 
         protected virtual void HandleTargetResult(GameObject? target, TargetAction action)
         {
-            if(target)
+            Target = target;
+            if (target)
             {
                 Agent.SetDestination(target.transform.position);
             }
 
-            if (action == TargetAction.Attack && currentCooldownInMilliSec == 0)
+            if (action == TargetAction.Attack && CurrentCooldownInMilliSec == 0)
             {
                 Attack(target);
             }
@@ -99,18 +110,39 @@ namespace GameJam.Mob
 
         private void Attack(GameObject? target)
         {
-            if (target == null)
+            if (!canAttack || target == null)
             {
                 return;
             }
 
-            currentCooldownInMilliSec = Stats.AttackCooldownInMilliSecs;
-
             if (target.TryGetComponent<IUnit>(out var unitTarget))
             {
-                // Perform the attack
-                unitTarget.GetHit(Stats.AttackDamage);
+                attacking = StartCoroutine(PerformAttack(unitTarget));
             }
+        }
+
+        private IEnumerator PerformAttack(IUnit attackTarget)
+        {
+            canAttack = false;
+            IsAttacking = true;
+            Agent.isStopped = true;
+            yield return new WaitForSeconds(Stats.AttackTimeSeconds);
+            if (Vector2.Distance(attackTarget.Unit.transform.position, transform.position) < Stats.AttackRange)
+            {
+                attackTarget.GetHit(Stats.AttackDamage);
+            }
+            Agent.isStopped = false;
+            IsAttacking = false;
+            yield return new WaitForSeconds(Stats.AttackCooldownSeconds);
+            canAttack = true;
+        }
+
+        private IEnumerator AttackCooldown()
+        {
+            canAttack = false;
+            Agent.isStopped = false;
+            yield return new WaitForSeconds(Stats.AttackCooldownSeconds);
+            canAttack = true;
         }
 
         private void Die()
@@ -123,6 +155,16 @@ namespace GameJam.Mob
         private void OnDestroy()
         {
             taskCollection.Dispose();
+        }
+
+        public virtual void GetParried()
+        {
+            if (attacking != null)
+            {
+                StopCoroutine(attacking);
+                StartCoroutine(AttackCooldown());
+                GetHit(Stats.AttackDamage);
+            }
         }
     }
 }

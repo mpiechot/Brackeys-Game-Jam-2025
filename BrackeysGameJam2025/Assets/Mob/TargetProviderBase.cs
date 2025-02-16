@@ -15,6 +15,6 @@ namespace GameJam.Mob
 
         protected IReadOnlyList<GameObject> Enemies { get; }
 
-        public abstract TargetResult GetTarget(Mob targetSearcher);
+        public abstract TargetResult GetTarget(MobBase targetSearcher);
     }
 }

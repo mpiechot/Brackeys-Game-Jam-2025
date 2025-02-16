@@ -9,6 +9,6 @@ namespace GameJam.Mob
         ///     Gets a target
         /// </summary>
         /// <returns></returns>
-        TargetResult GetTarget(Mob targetSearcher);
+        TargetResult GetTarget(MobBase targetSearcher);
     }
 }

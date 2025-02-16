@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,8 +19,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private bool canDash = true;
     private bool isDashing = false;
-    private float cooldown = 0.0f;
     private float dashTime = 0.2f;
+    private bool canMove = true;
 
     void Start()
     {
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDashing)
+        if (isDashing || !canMove)
         {
             return;
         }
@@ -64,5 +65,15 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
+    }
+
+    public void EnableMovement()
+    {
+        canMove = true;
+    }
+
+    public void DisableMovement()
+    {
+        canMove = false;
     }
 }

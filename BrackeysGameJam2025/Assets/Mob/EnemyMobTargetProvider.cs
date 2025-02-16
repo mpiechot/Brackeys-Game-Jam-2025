@@ -10,7 +10,7 @@ namespace GameJam.Mob
         {
         }
 
-        public override TargetResult GetTarget(Mob targetSearcher)
+        public override TargetResult GetTarget(MobBase targetSearcher)
         {
             var enemyNearBy = Physics.OverlapSphere(targetSearcher.transform.position, targetSearcher.Stats.AttackRange)
                 .FirstOrDefault(mob => Enemies.Any(enemy => enemy == mob));

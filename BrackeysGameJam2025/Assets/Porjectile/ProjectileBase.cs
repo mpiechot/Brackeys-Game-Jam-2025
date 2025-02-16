@@ -1,7 +1,7 @@
 ﻿using GameJam.Player;
 using UnityEngine;
 
-namespace Assets.Porjectile
+namespace GameJam.Porjectile
 {
     public class ProjectileBase : MonoBehaviour
     {
@@ -9,38 +9,40 @@ namespace Assets.Porjectile
         private bool isFollowingTarget = false;
 
         [SerializeField]
-        private float bulletSpeed = 1.0f;
+        private float speed = 1.0f;
 
-        private int bulletLifetime;
+        private int lifetime;
         private int initialLifetime;
-        private int bulletDamage;
-        private Transform bulletSender;
-        private Transform bulletTarget;
-        private Vector3 bulletMoveVector;
+        private int damage;
+        private Transform sender;
+        private Transform target;
+        private Vector3 moveVector;
 
         private bool isDestroyed = false;
 
+        public Transform Target => target;
+
         public void Fire(Transform sender, Transform targetInstance, int damage, int lieftime)
         {
-            bulletSender = sender;
-            bulletMoveVector = (bulletTarget.position - transform.position).normalized;
-            bulletTarget = targetInstance;
-            bulletDamage = damage;
-            bulletLifetime = lieftime;
-            initialLifetime = bulletLifetime;
+            this.sender = sender;
+            moveVector = (target.position - transform.position).normalized;
+            target = targetInstance;
+            this.damage = damage;
+            lifetime = lieftime;
+            initialLifetime = lifetime;
         }
 
         public void Parry(Transform newSender)
         {
-            bulletTarget = bulletSender;
-            bulletSender = newSender;
-            bulletMoveVector = (bulletTarget.position - transform.position).normalized;
-            bulletLifetime = initialLifetime;
+            target = sender;
+            sender = newSender;
+            moveVector = (target.position - transform.position).normalized;
+            lifetime = initialLifetime;
         }
 
         private void Update()
         {
-            if (!isDestroyed && bulletLifetime <= 0)
+            if (!isDestroyed && lifetime <= 0)
             {
                 ProjectileDie();
                 return;
@@ -48,11 +50,11 @@ namespace Assets.Porjectile
 
             if (isFollowingTarget)
             {
-                bulletMoveVector = (bulletTarget.position - transform.position).normalized;
+                moveVector = (target.position - transform.position).normalized;
             }
 
-            transform.position += bulletSpeed * Time.deltaTime * bulletMoveVector;
-            bulletLifetime--;
+            transform.position += speed * Time.deltaTime * moveVector;
+            lifetime--;
         }
 
         private void ProjectileDie()
@@ -65,7 +67,7 @@ namespace Assets.Porjectile
         {
             if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
             {
-                player.GetHit(bulletDamage);
+                player.GetHit(damage);
             }
         }
     }
