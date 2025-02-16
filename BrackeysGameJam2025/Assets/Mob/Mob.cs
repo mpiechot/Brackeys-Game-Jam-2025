@@ -21,8 +21,6 @@ namespace GameJam.Mob
 
         private CancellableTaskCollection taskCollection = new();
 
-        private GameObject? target;
-
         private ITargetProvider? targetProvider;
 
         private int currentCooldownInMilliSec = 0;
@@ -78,28 +76,28 @@ namespace GameJam.Mob
                 }
 
                 var targetResult = targetProvider.GetTarget(this);
-                target = targetResult.Target;
 
-                if(target)
-                {
-                    HandleTargetResult(targetResult.Action);
-                }
+                HandleTargetResult(targetResult.Target, targetResult.Action);
 
                 currentCooldownInMilliSec = Mathf.Max(0, currentCooldownInMilliSec - 1);
                 await UniTask.NextFrame(cancellationToken);
             }
         }
 
-        protected virtual void HandleTargetResult(TargetAction action)
+        protected virtual void HandleTargetResult(GameObject? target, TargetAction action)
         {
-            Agent.SetDestination(target!.transform.position);
+            if(target)
+            {
+                Agent.SetDestination(target.transform.position);
+            }
+
             if (action == TargetAction.Attack && currentCooldownInMilliSec == 0)
             {
-                Attack();
+                Attack(target);
             }
         }
 
-        private void Attack()
+        private void Attack(GameObject? target)
         {
             if (target == null)
             {
