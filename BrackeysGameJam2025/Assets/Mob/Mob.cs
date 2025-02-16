@@ -23,9 +23,9 @@ namespace GameJam.Mob
 
         private ITargetProvider? targetProvider;
 
-        private int currentCooldownInMilliSec = 0;
+        protected int currentCooldownInMilliSec { get; private set; } = 0;
 
-        private int currentHealth;
+        protected int currentHealth;
 
         public ITargetProvider? TargetProvider
         {
@@ -45,7 +45,7 @@ namespace GameJam.Mob
 
         public MobStats Stats => SerializeFieldNotAssignedException.ThrowIfNull(mobStats, nameof(mobStats));
 
-        private NavMeshAgent Agent => SerializeFieldNotAssignedException.ThrowIfNull(agent, nameof(agent));
+        protected NavMeshAgent Agent => SerializeFieldNotAssignedException.ThrowIfNull(agent, nameof(agent));
 
         private void Start()
         {
