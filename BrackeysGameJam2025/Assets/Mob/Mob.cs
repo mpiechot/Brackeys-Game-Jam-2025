@@ -2,7 +2,9 @@
 
 using Cysharp.Threading.Tasks;
 using GameJam.Exceptions;
+using GameJam.Player;
 using GameJam.Util;
+using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
@@ -36,8 +38,9 @@ namespace GameJam.Mob
             }
         }
 
-        public void Initialize(ITargetProvider? targetProvider)
+        public void Initialize(ITargetProvider? targetProviderInstance)
         {
+            targetProvider = targetProviderInstance;
             taskCollection.CancelExecution();
             taskCollection.StartExecution(MobBrainAsync);
         }
@@ -49,6 +52,8 @@ namespace GameJam.Mob
         private void Start()
         {
             currentHealth = Stats.MaxHealth;
+            var player = FindAnyObjectByType<PlayerController>().gameObject;
+            Initialize(new EnemyMobTargetProvider(Array.Empty<GameObject>(), new GameObject[] { player }));
         }
 
         public void GetHit(int damage)

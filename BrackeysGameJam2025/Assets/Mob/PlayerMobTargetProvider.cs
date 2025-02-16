@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using GameJam.Player;
+using System.Linq;
 using UnityEngine;
 
 namespace GameJam.Mob
 {
     public class PlayerMobTargetProvider : TargetProviderBase
     {
-        public PlayerMobTargetProvider(GameObject player, GameObject[] allies, GameObject[] enemies) : base(player, allies, enemies)
+        public PlayerMobTargetProvider(GameObject[] allies, GameObject[] enemies) : base(allies, enemies)
         {
         }
 
@@ -27,7 +28,15 @@ namespace GameJam.Mob
                 return new TargetResult(enemyNearBy.gameObject, TargetAction.Follow, false);
             }
 
-            return new TargetResult(Player, TargetAction.Follow, true);
+            // Find Player
+            var player = Enemies.OfType<PlayerController>().FirstOrDefault();
+
+            if (player == null)
+            {
+                return new TargetResult(targetSearcher.gameObject, TargetAction.None, true);
+            }
+
+            return new TargetResult(player.gameObject, TargetAction.Follow, true);
         }
     }
 }

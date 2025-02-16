@@ -5,14 +5,11 @@ namespace GameJam.Mob
 {
     public abstract class TargetProviderBase : ITargetProvider
     {
-        public TargetProviderBase(GameObject player, GameObject[] allies, GameObject[] enemies)
+        public TargetProviderBase(GameObject[] allies, GameObject[] enemies)
         {
-            Player = player;
             Allies = allies;
             Enemies = enemies;
         }
-
-        protected GameObject Player { get; }
 
         protected IReadOnlyList<GameObject> Allies { get; }
 

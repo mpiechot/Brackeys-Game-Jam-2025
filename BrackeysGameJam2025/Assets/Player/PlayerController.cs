@@ -1,10 +1,12 @@
 ﻿using Assets.Porjectile;
+using GameJam.Exceptions;
 using System.Linq;
 using UnityEngine;
 
 namespace GameJam.Player
 {
-    public class Player : MonoBehaviour, IUnit
+    [RequireComponent(typeof(PlayerHealth), typeof(PlayerMovement))]
+    public class PlayerController : MonoBehaviour, IUnit
     {
         [SerializeField]
         private float parryRange = 1f;
@@ -12,14 +14,19 @@ namespace GameJam.Player
         [SerializeField]
         private float parryCooldown = 1f;
 
+        [SerializeField]
+        private PlayerHealth? playerHealth;
+
         private bool canParry = true;
         private bool isParrying = false;
         private float cooldown = 0.0f;
         private float parryTime = 0.2f;
 
+        private PlayerHealth PlayerHealth => SerializeFieldNotAssignedException.ThrowIfNull(playerHealth);
+
         public void GetHit(int damage)
         {
-            throw new System.NotImplementedException();
+            PlayerHealth.ApplyDamage(damage);
         }
 
         public void Parry()

@@ -63,7 +63,7 @@ namespace Assets.Porjectile
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.TryGetComponent<Player>(out var player))
+            if (collision.gameObject.TryGetComponent<PlayerController>(out var player))
             {
                 player.GetHit(bulletDamage);
             }
