@@ -17,5 +17,6 @@ MonoBehaviour:
   <AttackTimeSeconds>k__BackingField: 2
   <AttackRange>k__BackingField: 2
   <AttackCooldownSeconds>k__BackingField: 2
-  <TargetingRange>k__BackingField: 1
+  <TargetingRange>k__BackingField: 10
   <MobType>k__BackingField: 2
+  <FollowRange>k__BackingField: 2

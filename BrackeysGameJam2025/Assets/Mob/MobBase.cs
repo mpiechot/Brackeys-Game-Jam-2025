@@ -51,6 +51,7 @@ namespace GameJam.Mob
             }
         }
 
+        [field: SerializeField]
         public bool IsEnemyMob { get; private set; } = true;
 
         protected int CurrentCooldownInMilliSec { get; private set; } = 0;
@@ -72,7 +73,7 @@ namespace GameJam.Mob
             currentHealth = Stats.MaxHealth;
             unitsController = FindAnyObjectByType<UnitsController>();
             unitsController.RegisterUnit(this, IsEnemyMob);
-            Initialize(new EnemyMobTargetProvider());
+            Initialize(IsEnemyMob ? new EnemyMobTargetProvider() : new PlayerMobTargetProvider());
         }
 
         public void GetHit(int damage)
