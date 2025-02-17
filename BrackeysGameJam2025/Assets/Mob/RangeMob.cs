@@ -6,11 +6,15 @@ using UnityEngine;
 public class RangeMob : MobBase
 {
 
-    protected override void HandleTargetResult(GameObject? target, TargetAction action)
+    protected override void HandleTargetResult(TargetResult targetResult)
     {
-        if (target) Agent.SetDestination(target.transform.position);
+        Target = targetResult.Target;
+        if (Target)
+        {
+            Agent.SetDestination(Target.transform.position);
+        }
 
-        var performedAction = action switch
+        var performedAction = targetResult.Action switch
         {
             TargetAction.Attack => "Bogenschuss",
             _ => "Ungültig"

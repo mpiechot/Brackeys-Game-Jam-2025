@@ -38,7 +38,7 @@ namespace GameJam.Mob
 
         public bool IsDead => currentHealth <= 0;
 
-        public GameObject? Target { get; private set; }
+        public GameObject? Target { get; protected set; }
 
         public GameObject Unit => gameObject;
 
@@ -106,7 +106,7 @@ namespace GameJam.Mob
                     targetResult = targetProvider.GetTarget(this, unitsController.PlayerAllies, unitsController.PlayerEnemies);
                 }
 
-                HandleTargetResult(targetResult.Target, targetResult.Action);
+                HandleTargetResult(targetResult);
 
                 CurrentCooldownInMilliSec = Mathf.Max(0, CurrentCooldownInMilliSec - 1);
                 await UniTask.NextFrame(cancellationToken);
@@ -119,17 +119,21 @@ namespace GameJam.Mob
             visualAnimator.SetFloat("XDirection", direction);
         }
 
-        protected virtual void HandleTargetResult(GameObject? target, TargetAction action)
+        protected virtual void HandleTargetResult(TargetResult targetResult)
         {
-            Target = target;
-            if (target)
+            Target = targetResult.Target;
+            if (Target)
             {
-                Agent.SetDestination(target.transform.position);
+                Vector3 direction = (Target.transform.position - transform.position).normalized;
+                float stopDistance = targetResult.TargetDistance; // Abstand, den der Agent vor dem Spieler halten soll
+
+                Vector3 targetPosition = Target.transform.position - (direction * stopDistance);
+                Agent.SetDestination(targetPosition);
             }
 
-            if (action == TargetAction.Attack && CurrentCooldownInMilliSec == 0)
+            if (targetResult.Action == TargetAction.Attack && CurrentCooldownInMilliSec == 0)
             {
-                Attack(target);
+                Attack(Target);
             }
         }
 

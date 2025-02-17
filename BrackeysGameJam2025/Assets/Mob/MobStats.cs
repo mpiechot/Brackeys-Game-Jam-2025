@@ -6,24 +6,27 @@ namespace GameJam.Mob
     public sealed class MobStats : ScriptableObject
     {
         [field: SerializeField]
-        public int MaxHealth { get; private set; }
+        public int MaxHealth { get; private set; } = 5;
 
         [field: SerializeField]
-        public int AttackDamage { get; private set; }
+        public int AttackDamage { get; private set; } = 5;
 
         [field: SerializeField]
-        public float AttackTimeSeconds { get; private set; }
+        public float AttackTimeSeconds { get; private set; } = 1;
 
         [field: SerializeField]
-        public float AttackRange { get; private set; }
+        public float AttackRange { get; private set; } = 2;
 
         [field: SerializeField]
-        public int AttackCooldownSeconds { get; private set; }
+        public int AttackCooldownSeconds { get; private set; } = 1;
 
         [field: SerializeField]
-        public float TargetingRange { get; private set; }
+        public float TargetingRange { get; private set; } = 5;
 
         [field: SerializeField]
-        public MobType MobType { get; private set; }
+        public MobType MobType { get; private set; } = MobType.None;
+
+        [field: SerializeField]
+        public float FollowRange { get; private set; } = 2f;
     }
 }

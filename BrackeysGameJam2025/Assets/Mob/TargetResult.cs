@@ -8,12 +8,15 @@ namespace GameJam.Mob
 
         public TargetAction Action { get; }
 
+        public float TargetDistance { get; }
+
         public bool CanOverride { get; }
 
-        public TargetResult(GameObject target, TargetAction action, bool canOverride)
+        public TargetResult(GameObject target, TargetAction action, float targetDistance, bool canOverride)
         {
             Target = target;
             Action = action;
+            TargetDistance = targetDistance;
             CanOverride = canOverride;
         }
     }
