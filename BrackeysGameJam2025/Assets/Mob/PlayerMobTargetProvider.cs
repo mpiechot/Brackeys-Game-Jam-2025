@@ -1,42 +1,37 @@
 ﻿using GameJam.Player;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace GameJam.Mob
 {
-    public class PlayerMobTargetProvider : TargetProviderBase
+    public class PlayerMobTargetProvider : ITargetProvider
     {
-        public PlayerMobTargetProvider(GameObject[] allies, GameObject[] enemies) : base(allies, enemies)
+        public TargetResult GetTarget(MobBase targetSearcher, IEnumerable<IUnit> allies, IEnumerable<IUnit> enemies)
         {
-        }
-
-        public override TargetResult GetTarget(MobBase targetSearcher)
-        {
-            var enemyNearBy = Physics.OverlapSphere(targetSearcher.transform.position, targetSearcher.Stats.AttackRange)
-                .FirstOrDefault(mob => Enemies.Any(enemy => enemy == mob));
-
-            if (enemyNearBy != null)
+            foreach (var target in enemies)
             {
-                return new TargetResult(enemyNearBy.gameObject, TargetAction.Attack, false);
+                if (Vector2.Distance(target.Unit.transform.position, targetSearcher.transform.position) < targetSearcher.Stats.AttackRange)
+                {
+                    return new TargetResult(target.Unit, TargetAction.Attack, false);
+                }
+
+                if (Vector2.Distance(target.Unit.transform.position, targetSearcher.transform.position) < targetSearcher.Stats.TargetingRange)
+                {
+                    return new TargetResult(target.Unit, TargetAction.Follow, false);
+                }
             }
 
-            var nextTarget = Physics.OverlapSphere(targetSearcher.transform.position, targetSearcher.Stats.TargetingRange)
-                .FirstOrDefault(mob => Enemies.Any(enemy => enemy == mob));
-
-            if (nextTarget != null)
+            foreach (var ally in allies)
             {
-                return new TargetResult(enemyNearBy.gameObject, TargetAction.Follow, false);
+                if (Vector2.Distance(ally.Unit.transform.position, targetSearcher.transform.position) < targetSearcher.Stats.TargetingRange)
+                {
+                    return new TargetResult(ally.Unit, TargetAction.Follow, true);
+                }
             }
 
-            // Find Player
-            var player = Enemies.OfType<PlayerController>().FirstOrDefault();
-
-            if (player == null)
-            {
-                return new TargetResult(targetSearcher.gameObject, TargetAction.None, true);
-            }
-
-            return new TargetResult(player.gameObject, TargetAction.Follow, true);
+            return new TargetResult(targetSearcher.gameObject, TargetAction.None, true);
         }
     }
 }

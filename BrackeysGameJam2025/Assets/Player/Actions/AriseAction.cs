@@ -26,26 +26,26 @@ namespace Assets.Player.Actions
 
             var objectsInParryRange = Physics2D.OverlapCircleAll(caller.position, Range);
 
-            // Parry all close-combat, which are targeting the player
+            // Arise 
             var enemiesInRange = objectsInParryRange.Select(obj => obj.GetComponent<MobBase>()).Where(mob => mob != null && mob.IsDead);
             foreach (var enemy in enemiesInRange)
             {
                 enemy.Arise();
             }
 
-
-            playerVisuals.ShowParryState();
-        }
-
-        protected override void PerformAfterAction()
-        {
             playerMovement.EnableMovement();
             playerVisuals.ShowNormalState();
         }
 
+        protected override void PerformAfterAction()
+        {
+            // Nothing to do
+        }
+
         protected override void PerformBeforeAction()
         {
-            throw new System.NotImplementedException();
+            playerMovement.DisableMovement();
+            playerVisuals.ShowParryState();
         }
     }
 }

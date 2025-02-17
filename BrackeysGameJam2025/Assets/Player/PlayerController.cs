@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Assets;
 using Assets.Player.Actions;
 using GameJam.Exceptions;
 using GameJam.Mob;
@@ -40,10 +41,13 @@ namespace GameJam.Player
 
         private PlayerVisualsController PlayerVisualsController => SerializeFieldNotAssignedException.ThrowIfNull(playerVisualsController);
 
-        private void Awake()
+        private void Start()
         {
             parryAction = new ParryAction(transform, PlayerMovement, PlayerVisualsController);
             ariseAction = new AriseAction(transform, PlayerMovement, PlayerVisualsController);
+
+            var unitsController = FindAnyObjectByType<UnitsController>();
+            unitsController.RegisterUnit(this, false);
 
             UpdateActions();
         }

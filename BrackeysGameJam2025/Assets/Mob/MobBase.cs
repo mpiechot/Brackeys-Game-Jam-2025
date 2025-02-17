@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Assets;
 using Cysharp.Threading.Tasks;
 using GameJam.Exceptions;
 using GameJam.Player;
@@ -28,7 +29,7 @@ namespace GameJam.Mob
         private ITargetProvider? targetProvider;
 
         protected int currentHealth;
-
+        private UnitsController unitsController;
         private bool canAttack = true;
 
         private Coroutine? attacking;
@@ -49,6 +50,9 @@ namespace GameJam.Mob
                 targetProvider = value;
             }
         }
+
+        public bool IsEnemyMob { get; private set; } = true;
+
         protected int CurrentCooldownInMilliSec { get; private set; } = 0;
 
         public void Initialize(ITargetProvider? targetProviderInstance)
@@ -66,14 +70,15 @@ namespace GameJam.Mob
         {
             visualAnimator.StartPlayback();
             currentHealth = Stats.MaxHealth;
-            var player = FindAnyObjectByType<PlayerController>().gameObject;
-            Initialize(new EnemyMobTargetProvider(Array.Empty<GameObject>(), new GameObject[] { player }));
+            unitsController = FindAnyObjectByType<UnitsController>();
+            unitsController.RegisterUnit(this, IsEnemyMob);
+            Initialize(new EnemyMobTargetProvider());
         }
 
         public void GetHit(int damage)
         {
             currentHealth -= damage;
-            if (currentHealth < 0)
+            if (currentHealth <= 0)
             {
                 Die();
             }
@@ -91,7 +96,15 @@ namespace GameJam.Mob
                     continue;
                 }
 
-                var targetResult = targetProvider.GetTarget(this);
+                TargetResult targetResult = default(TargetResult);
+                if (IsEnemyMob)
+                {
+                    targetResult = targetProvider.GetTarget(this, unitsController.PlayerEnemies, unitsController.PlayerAllies);
+                }
+                else
+                {
+                    targetResult = targetProvider.GetTarget(this, unitsController.PlayerAllies, unitsController.PlayerEnemies);
+                }
 
                 HandleTargetResult(targetResult.Target, targetResult.Action);
 
@@ -160,7 +173,8 @@ namespace GameJam.Mob
         private void Die()
         {
             // Make this unit arisable
-
+            Agent.isStopped = true;
+            unitsController.UnregisterUnit(this, IsEnemyMob);
             taskCollection.CancelExecution();
         }
 
@@ -179,9 +193,16 @@ namespace GameJam.Mob
             }
         }
 
-        internal void Arise()
+        public void Arise()
         {
-            throw new NotImplementedException();
+            var player = FindAnyObjectByType<PlayerController>().gameObject;
+            IsEnemyMob = false;
+            Agent.isStopped = false;
+            currentHealth = Stats.MaxHealth;
+            targetProvider = new PlayerMobTargetProvider();
+            unitsController.RegisterUnit(this, IsEnemyMob);
+            taskCollection.CancelExecution();
+            taskCollection.StartExecution(MobBrainAsync);
         }
     }
 }
